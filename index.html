@@ -1831,6 +1831,88 @@
     .contact-place-order-btn:disabled { background: #0d5e9f; cursor: not-allowed; transform: none; box-shadow: none; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* ===== AGE GATE ===== */
+    #ageGate {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: #0A0E1A;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    #ageGate.hidden { display: none; }
+    .age-gate-box {
+      background: #0D1A2E;
+      border: 1px solid rgba(17,113,186,0.3);
+      border-radius: 16px;
+      padding: 48px 40px;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 60px rgba(17,113,186,0.08);
+    }
+    .age-gate-logo {
+      width: 64px;
+      height: 64px;
+      object-fit: contain;
+      margin: 0 auto 20px;
+      display: block;
+    }
+    .age-gate-box h2 {
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+      margin: 0 0 10px;
+    }
+    .age-gate-box p {
+      font-size: 13.5px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.7;
+      margin: 0 0 32px;
+    }
+    .age-gate-confirm {
+      display: block;
+      width: 100%;
+      padding: 14px 24px;
+      background: #1171ba;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 12px;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .age-gate-confirm:hover { background: #0d5e9f; transform: translateY(-1px); }
+    .age-gate-confirm:active { transform: translateY(0); }
+    .age-gate-deny {
+      display: block;
+      width: 100%;
+      padding: 12px 24px;
+      background: transparent;
+      color: rgba(255,255,255,0.35);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .age-gate-deny:hover { border-color: rgba(255,255,255,0.25); color: rgba(255,255,255,0.55); }
+    .age-gate-disclaimer {
+      font-size: 11px !important;
+      color: rgba(255,255,255,0.25) !important;
+      margin: 20px 0 0 !important;
+    }
+
     /* ===== ORDER CONFIRMATION MODAL ===== */
     .order-modal-overlay {
       position: fixed;
@@ -1969,6 +2051,33 @@
 </head>
 <body>
 
+  <!-- AGE GATE -->
+  <div id="ageGate" role="dialog" aria-modal="true" aria-labelledby="ageGateTitle">
+    <div class="age-gate-box">
+      <img src="R4L Shield Logo.png" alt="R4L Peptides" class="age-gate-logo">
+      <h2 id="ageGateTitle">Age Verification Required</h2>
+      <p>This website contains research compounds intended for qualified researchers and licensed professionals only. You must be <strong style="color:rgba(255,255,255,0.75)">21 years of age or older</strong> to enter.</p>
+      <button class="age-gate-confirm" id="ageGateConfirm">I confirm I am 21 or older</button>
+      <button class="age-gate-deny" id="ageGateDeny">I am under 21 — Exit</button>
+      <p class="age-gate-disclaimer">By entering, you agree to our Terms of Service and confirm you will use all products for lawful research purposes only.</p>
+    </div>
+  </div>
+  <script>
+    (function() {
+      var gate = document.getElementById('ageGate');
+      if (sessionStorage.getItem('r4l_age_verified')) {
+        gate.classList.add('hidden');
+      }
+      document.getElementById('ageGateConfirm').addEventListener('click', function() {
+        sessionStorage.setItem('r4l_age_verified', '1');
+        gate.classList.add('hidden');
+      });
+      document.getElementById('ageGateDeny').addEventListener('click', function() {
+        window.location.href = 'https://www.google.com';
+      });
+    })();
+  </script>
+
   <!-- Preload bottle image so it's ready before canvas JS runs -->
   <img id="bottleSource" src="R4L Peptide Bottle.jpg" style="display:none;position:absolute;pointer-events:none;" alt="">
 
@@ -1996,7 +2105,7 @@
         <a href="#" class="active">Home</a>
         <a href="#products">Shop All Peptides</a>
         <a href="#about">About</a>
-        <a href="#">Contact</a>
+        <a href="mailto:R4Lpeptides@gmail.com">Contact</a>
       </nav>
       <div class="header-right">
         <button class="cart-btn" aria-label="Shopping cart">
@@ -2316,7 +2425,7 @@
         <div class="product-info">
           <div class="product-name">Kisspeptin-10</div>
           <div class="product-weight">10mg / Vial</div>
-          <div class="product-price"><span class="from">From</span>$39.00</div>
+          <div class="product-price"><span class="from">From</span>$38.00</div>
           <button class="add-to-cart">Add to Cart</button>
         </div>
       </div>
@@ -2551,7 +2660,7 @@
           <li><a href="#">Home</a></li>
           <li><a href="#products">Shop All Peptides</a></li>
           <li><a href="#about">About R4L</a></li>
-          <li><a href="#">Contact Us</a></li>
+          <li><a href="mailto:R4Lpeptides@gmail.com">Contact Us</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -2769,8 +2878,10 @@
       const shippingRow   = document.getElementById('cartShippingRow');
       const shippingLabel = document.getElementById('cartShippingLabel');
       const shippingAmtEl = document.getElementById('cartShippingAmt');
-      const freeShipping  = subtotal >= 150;
-      const shippingCost  = freeShipping ? 0 : subtotal * 0.10;
+      const freeShipAt    = window._r4l_freeShipAt !== undefined ? window._r4l_freeShipAt : 150;
+      const freeShipping  = subtotal >= freeShipAt;
+      const shipPct       = window._r4l_shipCost !== undefined ? window._r4l_shipCost / 100 : 0.10;
+      const shippingCost  = freeShipping ? 0 : subtotal * shipPct;
 
       shippingLabel.textContent = 'Shipping';
       if (freeShipping) {
@@ -3170,7 +3281,7 @@
       // ============================
       // PRODUCT DETAIL MODAL
       // ============================
-      const PRODUCT_DATA = {
+      window.PRODUCT_DATA = {
         '5-Amino-1MQ': {
           category: 'Cognitive',
           desc: '5-Amino-1MQ is a small molecule inhibitor of nicotinamide N-methyltransferase (NNMT), an enzyme linked to obesity and metabolic dysfunction. By blocking NNMT, it raises intracellular NAD+ levels, supporting mitochondrial function, fat oxidation, and cellular energy metabolism.',
@@ -3334,7 +3445,7 @@
       };
 
       function openPDP(name, weight, price, isOOS) {
-        const data = PRODUCT_DATA[name] || {
+        const data = window.PRODUCT_DATA[name] || {
           category: 'Research Peptide',
           desc: 'A precision-synthesized research peptide from Recovery 4 Life, produced to the highest purity standards for scientific inquiry.',
           benefits: ['Research-grade purity ≥99%', 'Third-party batch tested', 'For research use only']
@@ -3504,6 +3615,138 @@
     render();
   </script>
 
+  <!-- ============================
+       SANITY CMS INTEGRATION
+       Fetches live data and overlays onto the page.
+       Falls back to hardcoded values if Sanity has no content yet.
+  ============================ -->
+  <script>
+    (function() {
+      const PROJECT_ID = 'mhx96hyf';
+      const DATASET    = 'production';
+      const CDN        = `https://${PROJECT_ID}.apicdn.sanity.io/v2021-06-07/data/query/${DATASET}`;
+
+      function sanityFetch(query) {
+        const url = `${CDN}?query=${encodeURIComponent(query)}`;
+        return fetch(url).then(r => r.json()).then(d => d.result);
+      }
+
+      // ── Announcement bar ──────────────────────────────────────────────
+      sanityFetch('*[_type == "announcement" && active == true][0]{text}')
+        .then(function(doc) {
+          if (!doc || !doc.text) return;
+          const bar = document.querySelector('.ann-bar');
+          if (bar) bar.textContent = doc.text;
+        }).catch(function(){});
+
+      // ── Site settings ─────────────────────────────────────────────────
+      sanityFetch('*[_type == "siteSettings"][0]{venmoHandle,contactEmail,freeShippingThreshold,shippingCost}')
+        .then(function(s) {
+          if (!s) return;
+
+          // Venmo handle
+          if (s.venmoHandle) {
+            document.querySelectorAll('.order-modal-venmo').forEach(function(el) {
+              el.textContent = s.venmoHandle;
+            });
+            // Also patch hardcoded Venmo references in policy text (handled at runtime)
+            window._r4l_venmo = s.venmoHandle;
+          }
+
+          // Contact email — update all mailto links and visible email text
+          if (s.contactEmail) {
+            document.querySelectorAll('a[href^="mailto:"]').forEach(function(a) {
+              a.href = 'mailto:' + s.contactEmail;
+              // Only replace text if it looks like an email address
+              if (a.textContent.includes('@')) a.textContent = s.contactEmail;
+            });
+            window._r4l_email = s.contactEmail;
+          }
+
+          // Shipping threshold + cost
+          if (s.freeShippingThreshold !== undefined) window._r4l_freeShipAt = s.freeShippingThreshold;
+          if (s.shippingCost !== undefined)           window._r4l_shipCost   = s.shippingCost;
+        }).catch(function(){});
+
+      // ── Products ──────────────────────────────────────────────────────
+      sanityFetch('*[_type == "product"] | order(sortOrder asc){name,price,weight,badge,category,description,benefits,inStock}')
+        .then(function(products) {
+          if (!products || !products.length) return;
+
+          // Build a lookup by name
+          const byName = {};
+          products.forEach(function(p) { byName[p.name] = p; });
+
+          // Merge into the PRODUCT_DATA object used by the PDP modal
+          if (window.PRODUCT_DATA) {
+            products.forEach(function(p) {
+              if (p.description || p.benefits) {
+                window.PRODUCT_DATA[p.name] = {
+                  category: p.category || (window.PRODUCT_DATA[p.name] || {}).category || '',
+                  desc:     p.description || (window.PRODUCT_DATA[p.name] || {}).desc || '',
+                  benefits: p.benefits    || (window.PRODUCT_DATA[p.name] || {}).benefits || [],
+                };
+              }
+            });
+          }
+
+          // Update each product card on the page
+          document.querySelectorAll('.product-card').forEach(function(card) {
+            const nameEl   = card.querySelector('.product-name');
+            if (!nameEl) return;
+            const cardName = nameEl.textContent.trim();
+            const p        = byName[cardName];
+            if (!p) return;
+
+            // Price
+            if (p.price !== undefined) {
+              const priceEl = card.querySelector('.product-price');
+              if (priceEl) priceEl.innerHTML = '<span class="from">From</span>$' + p.price.toFixed(2);
+            }
+
+            // Weight
+            if (p.weight) {
+              const wEl = card.querySelector('.product-weight');
+              if (wEl) wEl.textContent = p.weight + ' / Vial';
+              // Also update canvas label
+              const cv = card.querySelector('.bottle-canvas');
+              if (cv) cv.dataset.weight = p.weight;
+            }
+
+            // Badge
+            const existingBadge = card.querySelector('.product-badge');
+            if (p.badge) {
+              if (existingBadge) {
+                existingBadge.textContent = p.badge;
+              } else {
+                const wrap = card.querySelector('.product-image-wrap');
+                if (wrap) {
+                  const span = document.createElement('span');
+                  span.className = 'product-badge';
+                  span.textContent = p.badge;
+                  wrap.appendChild(span);
+                }
+              }
+            } else if (existingBadge) {
+              existingBadge.remove();
+            }
+
+            // In-stock state
+            const btn = card.querySelector('.add-to-cart');
+            if (btn && p.inStock === false) {
+              btn.textContent  = 'Out of Stock';
+              btn.disabled     = true;
+              btn.style.opacity = '0.45';
+              btn.style.cursor  = 'not-allowed';
+            }
+
+            // Category filter attribute
+            if (p.category) card.dataset.category = p.category;
+          });
+        }).catch(function(){});
+    })();
+  </script>
+
   <!-- PRODUCT DETAIL MODAL -->
   <div id="pdpOverlay" class="pdp-overlay" role="dialog" aria-modal="true">
     <div class="pdp-modal" id="pdpModal">
@@ -3670,6 +3913,8 @@
         <p>Venmo the total below to:</p>
         <div class="order-modal-venmo">@R4LPep</div>
         <div class="order-modal-total" id="modalTotal">$0.00</div>
+        <p style="margin:12px 0 0;font-size:12.5px;color:rgba(255,255,255,0.55);">⚠️ In the Venmo description, type <strong style="color:#fff">"health"</strong></p>
+        <p style="margin:8px 0 0;font-size:11.5px;color:rgba(255,255,255,0.4);padding:8px 12px;background:rgba(255,255,255,0.04);border-radius:6px;border:1px solid rgba(255,255,255,0.07);">💳 If Venmo asks for the last 4 digits of a phone number, enter <strong style="color:rgba(255,255,255,0.75)">1596</strong></p>
       </div>
 
       <p class="order-modal-note">
