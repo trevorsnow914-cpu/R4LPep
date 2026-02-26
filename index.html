@@ -3467,8 +3467,12 @@
 
     function resize() {
       const hero = canvas.closest('.hero');
-      w = canvas.width  = hero ? hero.offsetWidth  : window.innerWidth;
-      h = canvas.height = hero ? hero.offsetHeight : window.innerHeight;
+      const dpr  = window.devicePixelRatio || 1;
+      w = hero ? hero.offsetWidth  : window.innerWidth;
+      h = hero ? hero.offsetHeight : window.innerHeight;
+      canvas.width  = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.filter = `blur(${BLUR}px)`;
     }
 
